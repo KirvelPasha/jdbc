@@ -1,6 +1,7 @@
 package entity;
 
 public class ApartmentTypes extends BaseEntity {
+
     private String type;
 
     public ApartmentTypes(String type) {

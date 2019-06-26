@@ -7,11 +7,13 @@ import java.sql.*;
 import java.util.*;
 
 public class ApartmentDaoImpl implements ApartmentDao {
-    private static final String SQL_QUERY_GET_CHEAPER_APARTMENTS = "SELECT *  FROM Apartment WHERE price <= ?";
-    private static final String SQL_QUERY_GET_APARTMENTS = "SELECT * FROM Apartment";
-    private static final String SQL_QUERY_GET_APARTMENTS_BY_TYPE = "SELECT * FROM Apartment JOIN ApartmentTypes ON Apartment.typeId = ApartmentTypes.id WHERE type = ? ";
-    private static final String SQL_QUERY_GET_APARTMENTS_BY_COUNTROOMS = "SELECT * From Apartment Join ApartmentTypes  On  Apartment.Typeid = ApartmentTypes.id WHERE countrooms = ?";
-    private static final String SQL_QUERY_GET_APARTMENTS_BY_ID = "SELECT Id From Apartment";
+
+    private static final String SQL_QUERY_GET_CHEAPER_APARTMENTS = "SELECT id, countplaces, countrooms, number, price, typeid" +
+            "  FROM Apartments WHERE price <= ?";
+    private static final String SQL_QUERY_GET_APARTMENTS = "SELECT id, countplaces, countrooms, number, price, typeid " +
+            "FROM Apartments";
+    private final String SQL_QUERY_ADD_APARTMENT = "INSERT INTO Apartments (number,countRooms,countPlaces," +
+            "price,typeId) VALUES(?,?,?,?,?)";
 
     @Override
     public List<Apartment> getCheaperApartments(int price) throws SQLException {
@@ -26,9 +28,7 @@ public class ApartmentDaoImpl implements ApartmentDao {
             resultSet = preparedStatement.executeQuery();
             apartments = initApartment(resultSet);
         } finally {
-            Close.connection(connection);
-            Close.connection(preparedStatement);
-            Close.connection(resultSet);
+
         }
         return apartments ;
     }
@@ -45,73 +45,49 @@ public class ApartmentDaoImpl implements ApartmentDao {
             resultSet = statement.executeQuery(SQL_QUERY_GET_APARTMENTS);
             apartments = initApartment(resultSet);
         } finally {
-            Close.connection(connection);
-            Close.connection(statement);
-            Close.connection(resultSet);
-        }
-        return apartments;
-    }
-
-    @Override
-    public List<Apartment> getApartmentsByType(String type) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Apartment> apartments = null;
-        try {
-            connection = DatabaseConnection.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement(SQL_QUERY_GET_APARTMENTS_BY_TYPE);
-            preparedStatement.setString(1,type);
-            resultSet = preparedStatement.executeQuery();
-            apartments = initApartment(resultSet);
-        } finally {
-            Close.connection(connection);
-            Close.connection(preparedStatement);
-            Close.connection(resultSet);
-        }
-        return apartments;
-    }
-
-    @Override
-    public List<Apartment> getApartmentByCountRooms(int countRooms) throws SQLException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Apartment> apartmentList = null;
-        try {
-            connection = DatabaseConnection.getInstance().getConnection();
-            preparedStatement = connection.prepareStatement(SQL_QUERY_GET_APARTMENTS_BY_COUNTROOMS);
-            preparedStatement.setInt(1,countRooms);
-            resultSet = preparedStatement.executeQuery();
-            apartmentList = initApartment(resultSet);
-
-        }finally {
-            Close.connection(connection);
-            Close.connection(preparedStatement);
-            Close.connection(resultSet);
-        }
-        return apartmentList;
-    }
-
-    @Override
-    public List<Integer> getAllId() throws SQLException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        List<Integer> collection = new ArrayList<>();
-        try {
-            connection = DatabaseConnection.getInstance().getConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL_QUERY_GET_APARTMENTS_BY_ID);
-            while (resultSet.next()) {
-                collection.add(resultSet.getInt("Id"));
+            try {
+                if (connection != null){
+                    connection.close();
+                }
+                if (statement != null){
+                    statement.close();
+                }
+                if (resultSet != null){
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
-        } finally {
-            Close.connection(connection);
-            Close.connection(statement);
-            Close.connection(resultSet);
         }
-        return collection;
+        return apartments;
+    }
+
+    @Override
+    public void create(Apartment apartment) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(SQL_QUERY_ADD_APARTMENT);
+            preparedStatement.setInt(1, apartment.getNumber());
+            preparedStatement.setInt(2, apartment.getCountRooms());
+            preparedStatement.setInt(3, apartment.getCountPlaces());
+            preparedStatement.setInt(4, apartment.getPrice());
+            preparedStatement.setInt(5, apartment.getTypeId());
+            preparedStatement.executeUpdate();
+        } finally {
+            try {
+                if (connection != null){
+                    connection.close();
+                }
+                if (preparedStatement != null){
+                    preparedStatement.close();
+                }
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
 
@@ -121,10 +97,10 @@ public class ApartmentDaoImpl implements ApartmentDao {
             Apartment apartment = new Apartment();
             apartment.setId(resultSet.getInt("Id"));
             apartment.setNumber(resultSet.getInt("number"));
-            apartment.setCountRooms(resultSet.getInt("count_rooms"));
-            apartment.setCountPlaces(resultSet.getInt("count_places"));
+            apartment.setCountRooms(resultSet.getInt("countrooms"));
+            apartment.setCountPlaces(resultSet.getInt("countplaces"));
             apartment.setPrice(resultSet.getInt("price"));
-            apartment.setTypeId(resultSet.getInt("type_id"));
+            apartment.setTypeId(resultSet.getInt("typeid"));
             apartments.add(apartment);
         }
         return apartments;

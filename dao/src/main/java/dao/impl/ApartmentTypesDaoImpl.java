@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApartmentTypesDaoImpl implements ApartmentTypesDao {
-    private static final String SQL_QUERY_GET_TYPES = "Select * From ApartmentTypes ";
+    private static final String SQL_QUERY_GET_TYPES = "SELECT id,type From ApartmentTypes ";
+    private final String  SQL_QUERY_ADD_APARTMENTTYPE ="INSERT INTO ApartmentTypes (type) VALUES(?)";
     @Override
     public List<ApartmentTypes> getAll() throws SQLException {
         Connection connection = null;
@@ -24,6 +25,30 @@ public class ApartmentTypesDaoImpl implements ApartmentTypesDao {
         } finally {
         }
         return apartmentTypes;
+    }
+
+    @Override
+    public void create(ApartmentTypes apartmentTypes) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = DatabaseConnection.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(SQL_QUERY_ADD_APARTMENTTYPE);
+            preparedStatement.setString(1,apartmentTypes.getType());
+            preparedStatement.executeUpdate();
+        } finally {
+            try {
+                if (connection != null){
+                    connection.close();
+                }
+                if (preparedStatement != null){
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private List<ApartmentTypes> initApartmentTypes(ResultSet resultSet) throws SQLException {

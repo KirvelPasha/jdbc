@@ -12,9 +12,6 @@ public interface ApartmentDao {
 
     List<Apartment> getAll() throws SQLException;
 
-    List<Apartment> getApartmentsByType(String type) throws SQLException;
+    void create(Apartment apartment) throws SQLException;
 
-    List<Apartment> getApartmentByCountRooms(int countRooms) throws SQLException;
-
-    List<Integer> getAllId() throws SQLException;
 }

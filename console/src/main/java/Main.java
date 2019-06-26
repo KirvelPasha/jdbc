@@ -16,7 +16,7 @@ public class Main {
         while (true){
             printMainMenu();
             Scanner scanner = new Scanner(System.in);
-            System.out.println("utils.Input number of variant: ");
+            System.out.println("Input number of variant: ");
             try {
                 Role role =null;
                 switch (scanner.nextInt()){

@@ -27,4 +27,9 @@ public class ApartmentServiceImpl implements ApartmentService {
         }
         return apartmentDao.getCheaperApartments(price);
     }
+
+    @Override
+    public void create(Apartment apartment) throws SQLException {
+        apartmentDao.create(apartment);
+    }
 }

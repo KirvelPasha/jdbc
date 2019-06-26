@@ -1,11 +1,14 @@
 package entity;
 
 public class Comments  extends  BaseEntity{
-    private String comment;
-    private int apartmentId;
-    private int personId;
 
-    public Comments(String comment, int apartmentId, int personId) {
+    private String comment;
+    private Integer apartmentId;
+    private Integer personId;
+
+    public Comments(Integer id, String comment,
+                    Integer apartmentId, Integer personId) {
+        super(id);
         this.comment = comment;
         this.apartmentId = apartmentId;
         this.personId = personId;
@@ -22,19 +25,19 @@ public class Comments  extends  BaseEntity{
         this.comment = comment;
     }
 
-    public int getApartmentId() {
+    public Integer getApartmentId() {
         return apartmentId;
     }
 
-    public void setApartmentId(int apartmentId) {
+    public void setApartmentId(Integer apartmentId) {
         this.apartmentId = apartmentId;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 

@@ -5,8 +5,6 @@ import impl.PersonServiceImpl;
 import interfaces.ApartmentService;
 import interfaces.PersonService;
 import utils.Input;
-
-import java.awt.im.InputMethodRequests;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -19,7 +17,7 @@ public class VisitorMenu implements Menu {
         System.out.println("1-Get all apartments");
         System.out.println("2-Get apartments by price");
         System.out.println("3-Sign up");
-        System.out.println("\nutils.Input your variant: ");
+        System.out.println("\nInput your variant: ");
     }
 
     @Override
@@ -33,7 +31,7 @@ public class VisitorMenu implements Menu {
                     System.out.println(apartmentService.getAll());
                     break;
                 case 2:
-                    System.out.println("utils.Input price");
+                    System.out.println("Input price");
                     System.out.println(apartmentService.getCheaperApartments(scanner.nextInt()));
                     break;
                 case 3:

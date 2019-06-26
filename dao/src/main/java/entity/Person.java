@@ -2,18 +2,17 @@ package entity;
 public class Person extends BaseEntity {
     private String name;
     private String surname;
-    private String phoneNumber;
     private String login;
     private String password;
     private String role;
 
+
     public Person(Integer id, String name, String surname,
-                  String phoneNumber, String login,
-                  String password, String role) {
+                   String login, String password,
+                  String role) {
         super(id);
         this.name = name;
         this.surname = surname;
-        this.phoneNumber = phoneNumber;
         this.login = login;
         this.password = password;
         this.role = role;
@@ -36,14 +35,6 @@ public class Person extends BaseEntity {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getLogin() {
@@ -75,7 +66,6 @@ public class Person extends BaseEntity {
         return "Person{" +
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +

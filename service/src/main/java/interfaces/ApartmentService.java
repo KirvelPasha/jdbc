@@ -10,4 +10,6 @@ public interface ApartmentService {
     List<Apartment> getAll() throws SQLException;
 
     List<Apartment> getCheaperApartments(int price) throws SQLException;
+
+    void create(Apartment apartment) throws SQLException;
 }

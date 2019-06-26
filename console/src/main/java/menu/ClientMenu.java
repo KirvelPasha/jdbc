@@ -11,7 +11,7 @@ public class ClientMenu implements Menu {
     public void printTextMenu() {
         System.out.println();
         System.out.println("0-Back to main menu");
-        System.out.println("\nutils.Input your variant: ");
+        System.out.println("\nInput your variant: ");
     }
 
     @Override

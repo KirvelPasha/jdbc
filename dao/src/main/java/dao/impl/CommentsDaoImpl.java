@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommentsDaoImpl implements CommentsDao {
-    private static final String SQL_QUERY_GET_Comments = "Select * From Comments Where apartmentId = ?";
+    private static final String SQL_QUERY_GET_Comments = "SELECT id, comment, apartment_id, person_id" +
+            " FROM Comments WHERE apartmentId = ?";
     private static final String SQL_QUERY_ADD_Comment = "INSERT INTO Comments " +
             "(Comment,ApartmentId,PersonId) VALUES(?,?,?)";
     @Override

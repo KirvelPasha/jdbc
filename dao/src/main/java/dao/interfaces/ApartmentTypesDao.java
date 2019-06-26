@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ApartmentTypesDao {
     List<ApartmentTypes> getAll() throws SQLException;
+
+    void create(ApartmentTypes apartmentTypes) throws SQLException;
 }
